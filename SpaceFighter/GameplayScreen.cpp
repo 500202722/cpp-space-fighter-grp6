@@ -1,6 +1,7 @@
 
 #include "GameplayScreen.h"
 #include "MainMenuScreen.h"
+#include "PauseMenuScreen.h"
 #include "Level.h"
 #include "Level01.h"
 
@@ -36,7 +37,10 @@ void GameplayScreen::LoadLevel(const int levelIndex)
 
 void GameplayScreen::HandleInput(const InputState& input)
 {
-	m_pLevel->HandleInput(input);
+	if (input.IsKeyDown(Key::ESCAPE)) {
+		AddScreen(new PauseMenuScreen(this));
+	}
+	else m_pLevel->HandleInput(input);
 }
 
 void GameplayScreen::Update(const GameTime& gameTime)

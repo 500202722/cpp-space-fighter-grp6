@@ -2,6 +2,7 @@
 #include "KatanaEngine.h"
 #include "SpaceFighter.h"
 #include "MainMenuScreen.h"
+#include "PauseMenuScreen.h"
 #include "Projectile.h"
 #include "Explosion.h"
 
