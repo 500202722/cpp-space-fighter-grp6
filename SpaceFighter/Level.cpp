@@ -28,6 +28,15 @@ void PlayerCollidesWithEnemy(GameObject *pObject1, GameObject *pObject2)
 	pEnemyShip->Hit(std::numeric_limits<float>::max());
 }
 
+void PlasmaBombHitsEnemy(GameObject* pObject1, GameObject* pObject2)
+{
+	bool m = pObject1->HasMask(CollisionType::Enemy);
+	EnemyShip* pEnemyShip = (EnemyShip*)((m) ? pObject1 : pObject2);
+	Projectile* pPlayerProjectile = (Projectile*)((!m) ? pObject1 : pObject2);
+	pEnemyShip->Hit(pPlayerProjectile->GetDamage());
+	pPlayerProjectile->Deactivate();
+}
+
 
 Level::Level()
 {
@@ -66,10 +75,13 @@ Level::Level()
 	CollisionType playerShip = (CollisionType::Player | CollisionType::Ship);
 	CollisionType playerProjectile = (CollisionType::Player | CollisionType::Projectile);
 	CollisionType enemyShip = (CollisionType::Enemy | CollisionType::Ship);
+	CollisionType playerProjectile = (CollisionType::Player | CollisionType::Projectile);
+	
 
 	pC->AddNonCollisionType(playerShip, playerProjectile);
 	pC->AddCollisionType(playerProjectile, enemyShip, PlayerShootsEnemy);
 	pC->AddCollisionType(playerShip, enemyShip, PlayerCollidesWithEnemy);
+	pC->AddCollisionType(playerProjectile, enemyShip, PlasmaBombHitsEnemy);
 }
 
 Level::~Level()

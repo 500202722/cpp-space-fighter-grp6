@@ -184,6 +184,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenuScreen.cpp" />
     <ClCompile Include="PauseMenuScreen.cpp" />
+    <ClCompile Include="PlasmaBomb.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Ship.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="Level02.h" />
     <ClInclude Include="MainMenuScreen.h" />
     <ClInclude Include="PauseMenuScreen.h" />
+    <ClInclude Include="PlasmaBomb.h" />
     <ClInclude Include="PlayerShip.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Ship.h" />
