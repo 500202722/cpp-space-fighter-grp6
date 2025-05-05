@@ -130,3 +130,9 @@ void PlayerShip::SetResponsiveness(const float responsiveness)
 {
 	m_responsiveness = Math::Clamp(0, 1, responsiveness);
 }
+
+void PlayerShip::PointScore(int points)
+{
+	// Adds points to the player score
+    Score += points;
+}

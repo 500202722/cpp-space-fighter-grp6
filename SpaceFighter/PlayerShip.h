@@ -9,8 +9,16 @@ class PlayerShip : public Ship
 
 public:
 
+	int Score = 0;
+
+	void PointScore(int points);
 	/** @brief Creates a new instance of PlayerShip. */
 	PlayerShip() { }
+
+	int PlayerShip::GetScore() const {
+		return Score;
+	}
+
 	virtual ~PlayerShip() { }
 
 	/** @brief Loads the content for the player ship.
@@ -56,6 +64,7 @@ public:
 	virtual void ConfineToScreen(const bool isConfined = true) { m_isConfinedToScreen = isConfined; }
 
 
+
 protected:
 
 	/** @brief Sets the responsiveness of the player ship.
@@ -81,5 +90,7 @@ private:
 	bool m_isConfinedToScreen = false;
 
 	Texture* m_pTexture = nullptr;
+
+
 
 };
