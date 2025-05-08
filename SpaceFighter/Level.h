@@ -15,6 +15,10 @@ class Level
 {
 
 public:
+	// Used to keep track of the score
+	void AddPoints(int Score);
+	// Sets the current font to none but it gets changed later
+	Font* ScoreFonts = nullptr;
 
 	/** @brief Instantiate a level object. */
 	Level();

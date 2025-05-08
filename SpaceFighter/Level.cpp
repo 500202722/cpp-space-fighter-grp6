@@ -3,7 +3,7 @@
 #include "EnemyShip.h"
 #include "Blaster.h"
 #include "GameplayScreen.h"
-
+#include "PlayerShip.h"
 std::vector<Explosion *> Level::s_explosions;
 
 // Collision Callback Functions
@@ -15,7 +15,19 @@ void PlayerShootsEnemy(GameObject *pObject1, GameObject *pObject2)
 	EnemyShip *pEnemyShip = (EnemyShip *)((m) ? pObject1 : pObject2);
 	Projectile *pPlayerProjectile = (Projectile *)((!m) ? pObject1 : pObject2);
 	pEnemyShip->Hit(pPlayerProjectile->GetDamage());
+
+	// Refreshes the point system once the game starts
+	Level* currentLevel = GameObject::GetCurrentLevel();
+	if (currentLevel) {
+		// If the enemy is hit, it adds 1 point for each enemy hit
+		currentLevel->AddPoints(1);
+	}
 	pPlayerProjectile->Deactivate();
+}
+
+void Level::AddPoints(int Score) {
+	// Adds points to the player score
+	m_pPlayerShip->PointScore(Score);
 }
 
 /** brief Callback function for when the player collides with an enemy. */
@@ -100,6 +112,8 @@ Level::~Level()
 void Level::LoadContent(ResourceManager& resourceManager)
 {
 	m_pPlayerShip->LoadContent(resourceManager);
+	// Puts the arial font into the variable ScoreFonts to be called in the draw function
+	ScoreFonts = resourceManager.Load<Font>("Fonts\\arial.ttf");
 
 	// Setup explosions if they haven't been already
 	Explosion* pExplosion;
@@ -252,13 +266,16 @@ void Level::Draw(SpriteBatch& spriteBatch)
 	const float alpha = GetGameplayScreen()->GetAlpha();
 
 	if (m_pBackground) spriteBatch.Draw(m_pBackground, Vector2::ZERO, Color::WHITE * alpha);
-
 	m_gameObjectIt = m_gameObjects.begin();
 	for (; m_gameObjectIt != m_gameObjects.end(); m_gameObjectIt++)
 	{
 		GameObject *pGameObject = (*m_gameObjectIt);
 		pGameObject->Draw(spriteBatch);
 	}
+	// Uses ScoreText to hold "Score: " and the current score for the player
+	std::string ScoreText = "Score: " + std::to_string(m_pPlayerShip->GetScore());
+	// Then displays score in the top right of the screen
+	spriteBatch.DrawString(ScoreFonts, &ScoreText, Vector2(1252, 10), Color::PINK);
 
 	spriteBatch.End();
 
