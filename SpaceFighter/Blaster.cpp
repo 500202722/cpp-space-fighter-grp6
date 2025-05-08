@@ -12,7 +12,9 @@ void Blaster::Fire(TriggerType triggerType)
 	if (!CanFire()) return;
 	if (!triggerType.Contains(GetTriggerType())) return;
 
+
 	Projectile* pProjectile = GetProjectile();
+	pProjectile->SetDirection(Vector2(0, -1));
 	if (!pProjectile) return;
 
 	AudioSample* pAudio = GetFireSound();

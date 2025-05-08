@@ -32,14 +32,8 @@ public:
 		@remark If the triggerType doesn't match that of the Blaster, the command will be ignored. */
 	virtual void Fire(TriggerType triggerType);
 
-	virtual float GetAOEAttackRadius() const { return m_aoeRadius;}
-
-	virtual void SetAOEAttackRadius(const float radius) { m_aoeRadius = radius; }
-
 private:
 
 	float m_cooldown = 3.5;
 	float m_cooldownSeconds = 5.5;
-	float m_aoeRadius = 200;
-
 };
