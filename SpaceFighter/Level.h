@@ -130,6 +130,8 @@ protected:
 
 private:
 
+	Font* m_pAttackFont = nullptr;
+
 	static std::vector<Explosion *> s_explosions;
 	//std::vector<Explosion *>::iterator m_explosionIt;
 

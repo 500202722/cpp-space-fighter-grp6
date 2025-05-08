@@ -43,6 +43,14 @@ public:
 		@return The type of collision the projectile will have. */
 	virtual CollisionType GetCollisionType() const;
 
+	/** @brief Get the direction of the projectile.
+		@return The direction of the projectile. */
+	virtual Vector2& GetDirection() { return m_direction; }
+
+	/** @brief Set the direction of the projectile.
+		@param direction The direction of the projectile. */
+	virtual void SetDirection(const Vector2 direction) { m_direction = direction; }
+
 
 protected:
 
@@ -54,17 +62,9 @@ protected:
 		@param damage The amount of damage the projectile will deal. */
 	virtual void SetDamage(const float damage) { m_damage = damage; }
 
-	/** @brief Set the direction of the projectile.
-		@param direction The direction of the projectile. */
-	virtual void SetDirection(const Vector2 direction) { m_direction = direction; }
-
 	/** @brief Get the speed of the projectile.
 		@return The speed of the projectile. */
 	virtual float GetSpeed() const { return m_speed; }
-
-	/** @brief Get the direction of the projectile.
-		@return The direction of the projectile. */
-	virtual Vector2 &GetDirection() { return m_direction; }
 
 	/** @brief Determine if the projectile was fired by the player.
 		@return True if the projectile was fired by the player. */
@@ -80,7 +80,7 @@ private:
 	static Texture *s_pTexture;
 
 	float m_speed = 500; // pixels per second
-	float m_damage = 1;
+	float m_damage = 1; 
 
 	Vector2 m_direction;
 

@@ -3,6 +3,7 @@
 #include "EnemyShip.h"
 #include "Blaster.h"
 #include "GameplayScreen.h"
+#include "PlasmaBomb.h"
 
 std::vector<Explosion *> Level::s_explosions;
 
@@ -28,15 +29,6 @@ void PlayerCollidesWithEnemy(GameObject *pObject1, GameObject *pObject2)
 	pEnemyShip->Hit(std::numeric_limits<float>::max());
 }
 
-void PlasmaBombHitsEnemy(GameObject* pObject1, GameObject* pObject2)
-{
-	bool m = pObject1->HasMask(CollisionType::Enemy);
-	EnemyShip* pEnemyShip = (EnemyShip*)((m) ? pObject1 : pObject2);
-	Projectile* pPlayerProjectile = (Projectile*)((!m) ? pObject1 : pObject2);
-	pEnemyShip->Hit(pPlayerProjectile->GetDamage());
-	pPlayerProjectile->Deactivate();
-}
-
 
 Level::Level()
 {
@@ -59,6 +51,12 @@ Level::Level()
 	pBlaster->SetProjectilePool(&m_projectiles);
 	m_pPlayerShip->AttachItem(pBlaster, Vector2::UNIT_Y * -20);
 
+	
+	PlasmaBomb* pPlasmaBomb = new PlasmaBomb("Plasma Bomb");
+	pPlasmaBomb->SetProjectilePool(&m_projectiles);
+	pPlasmaBomb->SetTriggerType(TriggerType::Special);
+	m_pPlayerShip->AttachItem(pPlasmaBomb, Vector2::UNIT_Y * -20);
+
 	for (int i = 0; i < 100; i++)
 	{
 		Projectile *pProjectile = new Projectile();
@@ -75,13 +73,12 @@ Level::Level()
 	CollisionType playerShip = (CollisionType::Player | CollisionType::Ship);
 	CollisionType playerProjectile = (CollisionType::Player | CollisionType::Projectile);
 	CollisionType enemyShip = (CollisionType::Enemy | CollisionType::Ship);
-	CollisionType playerProjectile = (CollisionType::Player | CollisionType::Projectile);
 	
 
 	pC->AddNonCollisionType(playerShip, playerProjectile);
 	pC->AddCollisionType(playerProjectile, enemyShip, PlayerShootsEnemy);
 	pC->AddCollisionType(playerShip, enemyShip, PlayerCollidesWithEnemy);
-	pC->AddCollisionType(playerProjectile, enemyShip, PlasmaBombHitsEnemy);
+	
 }
 
 Level::~Level()
@@ -100,6 +97,8 @@ Level::~Level()
 void Level::LoadContent(ResourceManager& resourceManager)
 {
 	m_pPlayerShip->LoadContent(resourceManager);
+	m_pAttackFont = resourceManager.Load<Font>("Fonts\\Ethnocentric.ttf");
+	Font::SetLoadSize(20);
 
 	// Setup explosions if they haven't been already
 	Explosion* pExplosion;
@@ -252,6 +251,11 @@ void Level::Draw(SpriteBatch& spriteBatch)
 	const float alpha = GetGameplayScreen()->GetAlpha();
 
 	if (m_pBackground) spriteBatch.Draw(m_pBackground, Vector2::ZERO, Color::WHITE * alpha);
+
+	std::string Blaster = "Blaster:   Spacebar";
+	spriteBatch.DrawString(m_pAttackFont, &Blaster, Vector2(100, 750), Color::GRAY * alpha);
+	std::string PlasmaBomb = "Plasma Bomb:   X";
+	spriteBatch.DrawString(m_pAttackFont, &PlasmaBomb, Vector2(100, 800), Color::GRAY * alpha);
 
 	m_gameObjectIt = m_gameObjects.begin();
 	for (; m_gameObjectIt != m_gameObjects.end(); m_gameObjectIt++)

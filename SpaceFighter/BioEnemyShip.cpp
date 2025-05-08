@@ -5,7 +5,7 @@
 
 BioEnemyShip::BioEnemyShip()
 {
-	SetSpeed(150);
+	SetSpeed(250);
 	SetMaxHitPoints(1);
 	SetCollisionRadius(20);
 }
